@@ -48,16 +48,29 @@ function Arrow(direction) {
 // To enable animating the arrows
 Arrow.prototype.step = function() {
 
-	this.image.css("top", "+=2px");
+	// Controls the speed of the arrows
+	this.image.css("top", "+=4px");
 
 };
-
 
 // Deletes arrows when they get to bottom of page
-Arrow.prototype.destroy = function(direction) {
+Arrow.prototype.destroy = function() {
+
+	// removes the image of the DOM
+	this.image.remove();
+
+	// Removes the note/arrow from memory/array
+	notes.splice(0,1);
+
+};
+
+// Explodes arrow when hit
+Arrow.prototype.explode = function() {
 
 	this.image.remove();
+
 };
+
 
 
 // For random arrows
@@ -67,7 +80,7 @@ var randNum = 0;
 var frame = 0;
 
 // Determines the speed of notes
-var arrowSpawnRate = 100;
+var arrowSpawnRate = 60;
 
 
 // Random generator for arrows
@@ -115,7 +128,7 @@ function render() {
 		notes[i].step();
 
 		// Check for cleanup
-		if (notes[i].image.position().top > 850) {
+		if (notes[i].image.position().top > 890) {
 
 			notes[i].destroy();
 
@@ -130,7 +143,6 @@ function render() {
 // jQuery to animate arrows //
 $(document).ready(function () {
 
-
 	// shim layer with setTimeout fallback
 	window.requestAnimFrame = (function() {
 
@@ -142,7 +154,7 @@ $(document).ready(function () {
 
 		function(callback) {
 
-			window.setTimeout(callback, 1000 / 75);
+			window.setTimeout(callback, 40 / 75);
 
 		};
 
@@ -167,30 +179,49 @@ $(document).ready(function () {
 
 
 // Listening for when the key is pressed
-$(document).keyup(function(event){
+$(document).keydown( function(event) {
 	
-	if (event.keyCode == 40) {
+	for (var i = 0; i < notes.length; i++) {
+	
+			//console.log(notes[i].image.position().top);
 
-		console.log("down");
+		if (event.keyCode == 37 && notes[i].direction == "left") {
 
-	}
+			if (notes[i].image.position().top > 777 && notes[i].image.position().top < 850) {
 
-	if (event.keyCode == 38) {
+				console.log("LEFT! "+notes[i].explode());
 
-		console.log("up");
+			}
+			
+		}
+		if (event.keyCode == 38 && notes[i].direction == "up") {
 
-	}
+			if (notes[i].image.position().top > 777 && notes[i].image.position().top < 850) {
+				
+				console.log("UP! "+notes[i].explode());
 
-	if (event.keyCode == 37) {
+			}
 
-		console.log("left");
+		}
+		if (event.keyCode == 40 && notes[i].direction == "down") {
 
-	}
+			if (notes[i].image.position().top > 777 && notes[i].image.position().top < 850) {
+				
+				console.log("DOWN! "+notes[i].explode());
 
-	if (event.keyCode == 39) {
+			}
 
-		console.log("right");
+		}
+		if (event.keyCode == 39 && notes[i].direction == "right") {
 
-	}
+			if (notes[i].image.position().top > 777 && notes[i].image.position().top < 850) {
+				
+				console.log("RIGHT! "+notes[i].explode());
+
+			}
+
+		}
+
+	}// ends loop
 
 });// ends $(doc).keyup
