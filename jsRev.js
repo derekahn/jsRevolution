@@ -80,7 +80,7 @@ var randNum = 0;
 var frame = 0;
 
 // Determines the speed of notes
-var arrowSpawnRate = 60;
+var arrowSpawnRate = 40;
 
 
 // Random generator for arrows
@@ -128,7 +128,7 @@ function render() {
 		notes[i].step();
 
 		// Check for cleanup
-		if (notes[i].image.position().top > 890) {
+		if (notes[i].image.position().top > 615) {
 
 			notes[i].destroy();
 
@@ -183,11 +183,11 @@ $(document).keydown( function(event) {
 	
 	for (var i = 0; i < notes.length; i++) {
 	
-			//console.log(notes[i].image.position().top);
+			console.log(notes[i].image.position().top);
 
 		if (event.keyCode == 37 && notes[i].direction == "left") {
 
-			if (notes[i].image.position().top > 777 && notes[i].image.position().top < 850) {
+			if (notes[i].image.position().top > 490 && notes[i].image.position().top < 530) {
 
 				console.log("LEFT! "+notes[i].explode());
 
@@ -196,7 +196,7 @@ $(document).keydown( function(event) {
 		}
 		if (event.keyCode == 38 && notes[i].direction == "up") {
 
-			if (notes[i].image.position().top > 777 && notes[i].image.position().top < 850) {
+			if (notes[i].image.position().top > 490 && notes[i].image.position().top < 530) {
 				
 				console.log("UP! "+notes[i].explode());
 
@@ -205,7 +205,7 @@ $(document).keydown( function(event) {
 		}
 		if (event.keyCode == 40 && notes[i].direction == "down") {
 
-			if (notes[i].image.position().top > 777 && notes[i].image.position().top < 850) {
+			if (notes[i].image.position().top > 490 && notes[i].image.position().top < 530) {
 				
 				console.log("DOWN! "+notes[i].explode());
 
@@ -214,7 +214,7 @@ $(document).keydown( function(event) {
 		}
 		if (event.keyCode == 39 && notes[i].direction == "right") {
 
-			if (notes[i].image.position().top > 777 && notes[i].image.position().top < 850) {
+			if (notes[i].image.position().top > 490 && notes[i].image.position().top < 530) {
 				
 				console.log("RIGHT! "+notes[i].explode());
 
