@@ -1,11 +1,3 @@
-/* Arrows
- = $("<img src='./arrows/arrowLeft.gif'/>");
- = $("<img src='./arrows/arrowRight.gif'/>");
-$("<img src='./arrows/arrowUp.gif'/>");
-= $("<img src='./arrows/arrowDown.gif'/>");
-*/
-
-
 // 'notes' to store Arrows  
 var notes = [];
 
@@ -53,12 +45,19 @@ function Arrow(direction) {
 
 }// ends CLASS Arrow
 
-// This is to enable animating the arrows
+// To enable animating the arrows
 Arrow.prototype.step = function() {
 
 	this.image.css("top", "+=2px");
+
 };
 
+
+// Deletes arrows when they get to bottom of page
+Arrow.prototype.destroy = function(direction) {
+
+	this.image.remove();
+};
 
 
 // For random arrows
@@ -68,7 +67,7 @@ var randNum = 0;
 var frame = 0;
 
 // Determines the speed of notes
-var arrowSpawnRate = 30;
+var arrowSpawnRate = 100;
 
 
 // Random generator for arrows
@@ -79,25 +78,21 @@ function randomGen() {
 
 	if (randNum === 1) {
 
-		console.log("left");
 		notes.push(new Arrow("left"));
 
 	}
 	if (randNum === 2) {
 
-		console.log("right");
 		notes.push(new Arrow("right"));
 
 	}
 	if (randNum === 3) {
 
-		console.log("up");
 		notes.push(new Arrow("up"));
 		
 	}
 	if (randNum === 4) {
 
-		console.log("down");
 		notes.push(new Arrow("down"));
 
 	}
@@ -110,7 +105,6 @@ function render() {
 
 	if (frame++ % arrowSpawnRate === 0) {
 
-		console.log(frame);
 		randomGen();
 
 	}
@@ -120,9 +114,55 @@ function render() {
 
 		notes[i].step();
 
+		// Check for cleanup
+		if (notes[i].image.position().top > 850) {
+
+			notes[i].destroy();
+
+		}
+
 	}
 
 }// ends render()
+
+
+
+// jQuery to animate arrows //
+$(document).ready(function () {
+
+
+	// shim layer with setTimeout fallback
+	window.requestAnimFrame = (function() {
+
+		return window.requestAnimationFrame ||
+
+		window.webkitRequestAnimationFrame ||
+
+		window.mozRequestAnimationFrame ||
+
+		function(callback) {
+
+			window.setTimeout(callback, 1000 / 75);
+
+		};
+
+	})();
+
+	/*	place the rAF *before* the render() 
+		to assure as close to 60fps with the 
+		setTimeout fallback.					*/
+
+	// Infinte loop for game play
+	(function animloop() {
+
+		requestAnimFrame(animloop);
+
+		render();
+
+	})();// ends (function animloop() )
+
+
+});// ends $(doc).ready
 
 
 
@@ -154,42 +194,3 @@ $(document).keyup(function(event){
 	}
 
 });// ends $(doc).keyup
-
-
-
-// jQuery to animate arrows //
-$(document).ready(function () {
-
-	// shim layer with setTimeout fallback
-	window.requestAnimFrame = (function() {
-
-		return window.requestAnimationFrame ||
-
-		window.webkitRequestAnimationFrame ||
-
-		window.mozRequestAnimationFrame ||
-
-		function(callback) {
-
-			window.setTimeout(callback, 1000 / 75);
-
-		};
-
-	})();
-
-	/*	place the rAF *before* the render() 
-		to assure as close to 60fps with the 
-		setTimeout fallback.					*/
-
-	// usage: instead of setInterval(render, 16) ....
-
-	(function animloop() {
-
-		requestAnimFrame(animloop);
-
-		render();
-
-
-	})();// ends (function animloop() )
-
-});// ends $(doc).ready
