@@ -1,0 +1,10 @@
+.stage {
+	background-color: black;
+	height: 800px;
+	width: 500px;
+	text-align: center;
+}
+#controls {
+	padding-left: 105px;
+
+}

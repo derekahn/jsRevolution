@@ -20,22 +20,55 @@ var notes = [];
 // Class Arrow
 function Arrow(direction) {
 
+	// CSS spacings for the arrows //
+	var xPos = null;
+
+	switch(direction) {
+
+		case "left" : xPos = "115px";
+		break;
+
+		case "up" : xPos = "182";
+		break;
+
+		case "down" : xPos = "252px";
+		break;
+
+		case "right" : xPos = "322px";
+		break;
+
+	}
+
 	this.direction = direction;
 	this.image = $("<img src='./arrows/" + direction + ".gif'/>");
+	this.image.css({
+
+		position: "absolute",
+		top: "0px",
+		left: xPos
+
+	});
+
 	$('.stage').append(this.image);
 
 }// ends CLASS Arrow
 
+// This is to enable animating the arrows
+Arrow.prototype.step = function() {
 
+	this.image.css("top", "+=2px");
+};
 
 
 
 // For random arrows
 var randNum = 0;
 
+// Frame increasing
 var frame = 0;
 
-var arrowSpawnRate = 40;
+// Determines the speed of notes
+var arrowSpawnRate = 30;
 
 
 // Random generator for arrows
@@ -45,21 +78,25 @@ function randomGen() {
 	randNum = Math.floor(Math.random() * 4) + 1;
 
 	if (randNum === 1) {
+
 		console.log("left");
 		notes.push(new Arrow("left"));
 
 	}
 	if (randNum === 2) {
+
 		console.log("right");
 		notes.push(new Arrow("right"));
 
 	}
 	if (randNum === 3) {
+
 		console.log("up");
 		notes.push(new Arrow("up"));
 		
 	}
 	if (randNum === 4) {
+
 		console.log("down");
 		notes.push(new Arrow("down"));
 
@@ -73,7 +110,15 @@ function render() {
 
 	if (frame++ % arrowSpawnRate === 0) {
 
+		console.log(frame);
 		randomGen();
+
+	}
+
+	// Animate arrows showering down //
+	for (var i = notes.length - 1; i >= 0; i--) {
+
+		notes[i].step();
 
 	}
 
