@@ -22,19 +22,10 @@ function Arrow(direction) {
 
 	this.direction = direction;
 	this.image = $("<img src='./arrows/" + direction + ".gif'/>");
+	$('.stage').append(this.image);
 
 }// ends CLASS Arrow
 
-
-// Instantiate Arrows //
-
-var leftArrow = new Arrow("left");
-
-var rightArrow = new Arrow("right");
-
-var upArrow = new Arrow("up");
-
-var downArrow = new Arrow("down");
 
 
 
@@ -55,77 +46,74 @@ function randomGen() {
 
 	if (randNum === 1) {
 		console.log("left");
-		notes.push(leftArrow);
+		notes.push(new Arrow("left"));
 
 	}
 	if (randNum === 2) {
 		console.log("right");
-		notes.push(rightArrow);
+		notes.push(new Arrow("right"));
 
 	}
 	if (randNum === 3) {
 		console.log("up");
-		notes.push(upArrow);
+		notes.push(new Arrow("up"));
 		
 	}
 	if (randNum === 4) {
 		console.log("down");
-		notes.push(downArrow);
+		notes.push(new Arrow("down"));
 
 	}
 
 }// ends randomGen()
 
 
+// Render function //
+function render() {
+
+	if (frame++ % arrowSpawnRate === 0) {
+
+		randomGen();
+
+	}
+
+}// ends render()
+
+
+
+// Listening for when the key is pressed
+$(document).keyup(function(event){
+	
+	if (event.keyCode == 40) {
+
+		console.log("down");
+
+	}
+
+	if (event.keyCode == 38) {
+
+		console.log("up");
+
+	}
+
+	if (event.keyCode == 37) {
+
+		console.log("left");
+
+	}
+
+	if (event.keyCode == 39) {
+
+		console.log("right");
+
+	}
+
+});// ends $(doc).keyup
+
+
+
 // jQuery to animate arrows //
 $(document).ready(function () {
-
-
-	// Render function //
-	function render() {
-
-		if (frame++ % arrowSpawnRate === 0) {
-
-			randomGen();
-
-			$('.stage').append(notes);
-			
-
-
-		}
-
-	}// ends render()
-
-
-	// Listening for when the key is pressed
-	$(document).keyup(function(event){
-		
-		if (event.keyCode == 40) {
-
-			console.log("down");
-
-		}
-
-		if (event.keyCode == 38) {
-
-			console.log("up");
-
-		}
-
-		if (event.keyCode == 37) {
-
-			console.log("left");
-
-		}
-
-		if (event.keyCode == 39) {
-
-			console.log("right");
-
-		}
-
-	});
-
 
 	// shim layer with setTimeout fallback
 	window.requestAnimFrame = (function() {
